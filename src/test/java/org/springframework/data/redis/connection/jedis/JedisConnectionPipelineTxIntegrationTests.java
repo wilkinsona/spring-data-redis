@@ -18,18 +18,6 @@ public class JedisConnectionPipelineTxIntegrationTests extends JedisConnectionTr
 	public void testGetConfig() {
 	}
 
-	@Ignore("https://github.com/xetorthio/jedis/pull/389 Pipeline tries to return List<String> instead of Long on sort")
-	public void testSortStore() {
-	}
-
-	@Ignore("Jedis issue: Pipeline tries to return Long instead of List<String> on sort with no params")
-	public void testSortNullParams() {
-	}
-
-	@Ignore("https://github.com/xetorthio/jedis/pull/389 Pipeline tries to return Long instead of List<String> on sort with no params")
-	public void testSortStoreNullParams() {
-	}
-
 	@Test
 	public void testEcho() {
 		actual.add(connection.echo("Hello World"));

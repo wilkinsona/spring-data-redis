@@ -16,7 +16,6 @@
 package org.springframework.data.redis.connection.jedis;
 
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.data.redis.connection.AbstractConnectionTransactionIntegrationTests;
@@ -51,14 +50,6 @@ public class JedisConnectionTransactionIntegrationTests extends
 			// sending QUIT to Redis
 		}
 		connection = null;
-	}
-
-	@Ignore("DATAREDIS-143 transaction tries to return List<String> instead of Long on sort")
-	public void testSortStore() {
-	}
-
-	@Ignore("DATAREDIS-143 transaction tries to return Long instead of List<String> on sort with no params")
-	public void testSortStoreNullParams() {
 	}
 
 	// Unsupported Ops
