@@ -355,8 +355,6 @@ public class JedisConnection implements RedisConnection {
 					pipeline(new JedisResult(pipeline.sort(key, sortParams)));
 				}
 				else {
-					// Jedis pipeline gets ClassCastException trying to return Long instead of List<byte[]>
-					// so no point trying to convert
 					pipeline(new JedisResult(pipeline.sort(key)));
 				}
 

@@ -63,22 +63,6 @@ public class JedisConnectionPipelineIntegrationTests extends
 	public void testGetConfig() {
 	}
 
-	@Ignore("https://github.com/xetorthio/jedis/pull/389 Pipeline tries to return List<String> instead of Long on sort")
-	public void testSortStore() {
-	}
-
-	@Ignore("Jedis issue: Pipeline tries to return Long instead of List<String> on sort with no params")
-	public void testSortNullParams() {
-	}
-
-	@Ignore("https://github.com/xetorthio/jedis/pull/389 Pipeline tries to return Long instead of List<String> on sort with no params")
-	public void testSortStoreNullParams() {
-	}
-
-	@Ignore("https://github.com/xetorthio/jedis/issues/438 Cannot get results from Pipeline after tx discard called")
-	public void testMultiDiscard() {
-	}
-
 	@Test
 	public void testWatch() {
 		connection.set("testitnow", "willdo");
