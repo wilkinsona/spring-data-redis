@@ -16,15 +16,7 @@
 
 package org.springframework.data.redis.connection.lettuce;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
-import static org.springframework.data.redis.SpinBarrier.waitFor;
-
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import com.lambdaworks.redis.RedisAsyncConnection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.dao.DataAccessException;
@@ -41,13 +33,19 @@ import org.springframework.test.annotation.IfProfileValue;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.lambdaworks.redis.RedisAsyncConnection;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
+import static org.springframework.data.redis.SpinBarrier.waitFor;
 
 /**
  * Integration test of {@link LettuceConnection}
  *
  * @author Costin Leau
  * @author Jennifer Hickey
+ * @author Thomas Darimont
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -93,6 +91,8 @@ public class LettuceConnectionIntegrationTests extends AbstractConnectionIntegra
 
 		// Now it should be set
 		assertEquals("delay", conn2.get("txs1"));
+        conn2.closePipeline();
+        conn2.close();
 	}
 
 	@Test
@@ -140,7 +140,9 @@ public class LettuceConnectionIntegrationTests extends AbstractConnectionIntegra
 
 		// The dedicated connection should not be closed b/c it's part of a pool
 		connection.multi();
+        connection.close();
 		factory2.destroy();
+        pool.destroy();
 	}
 
 	@Test
@@ -157,7 +159,10 @@ public class LettuceConnectionIntegrationTests extends AbstractConnectionIntegra
 		connection.close();
 		// The dedicated connection should not be closed
 		connection.ping();
+
+        connection.close();
 		factory2.destroy();
+        pool.destroy();
 	}
 
 	@Test
@@ -198,6 +203,7 @@ public class LettuceConnectionIntegrationTests extends AbstractConnectionIntegra
 		}
 		connection.close();
 		factory2.destroy();
+        pool.destroy();
 	}
 
 	@Test
@@ -210,7 +216,9 @@ public class LettuceConnectionIntegrationTests extends AbstractConnectionIntegra
 		factory2.afterPropertiesSet();
 		RedisConnection connection = factory2.getConnection();
 		connection.select(2);
+        connection.close();
 		factory2.destroy();
+        pool.destroy();
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -244,6 +252,7 @@ public class LettuceConnectionIntegrationTests extends AbstractConnectionIntegra
 					scriptDead.set(true);
 				}
 				conn2.close();
+                factory2.destroy();
 			}
 		});
 		th.start();
@@ -273,6 +282,7 @@ public class LettuceConnectionIntegrationTests extends AbstractConnectionIntegra
 				conn2.del("foo");
 			}
 			conn2.close();
+            factory2.destroy();
 		}
 	}
 }
